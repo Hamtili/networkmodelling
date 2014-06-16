@@ -12,24 +12,24 @@ def mst(Graph):
     d = dict.fromkeys(V,float('Inf'))
     d[s] = 0
     S = set()
-    ET = set()
+    ET = []
     
-    while S != V:
+    while S != V:#
         VS = V - S
-        tmp = copy.copy(d)
+        tmp = copy.deepcopy(d)
         map(tmp.__delitem__, S)
         u = min(tmp,key=tmp.get)
-        S = S | set(u)
+        S = S | set([u])
         nodes = set(Graph.neighbors(u)) & VS
         for v in nodes:
             edge = Graph.get_edge_data(u,v)
             if edge['weight'] < d[v]:
                 d[v] = edge['weight']
-                e[v] = (u,v)
+                e[v] = (u,v,{'id':edge['id'], 'weight':edge['weight']})
                 
     Vs = V - set(s)           
     for v in Vs:
-        ET.add(e[v])
+        ET.append(e[v])
     return ET
         
     

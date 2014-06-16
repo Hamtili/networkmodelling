@@ -17,5 +17,6 @@ args = parser.parse_args();
 graphFile = args.file
 
 Graph = nx.read_gexf(graphFile)
-print tspmst(Graph)
+print nx.minimum_spanning_tree(Graph).edges()
+tspmst(Graph)
 
