@@ -9,58 +9,11 @@ import math
 import networkx as nx
 import copy
 
-def explore(v, Graph, AdjList, cur):
-    e = cur[v]
-    u = AdjList[Graph.nodes().index(v)][e % Graph.degree(v) / 2]
-    C = [v, int(e), u]
-    cur[v] = cur[v] + 1
-    
-    while u != v:
-        e = cur[u]
-        w = AdjList[Graph.nodes().index(u)][e % Graph.degree(u) / 2]
-        C.extend((int(e), w))
-        u = w
-    
-    return {'C': C, 'cur': cur}
-    
-def eulercycle(Graph):
-    V = Graph.nodes()
-    AdjList = Graph.adjacency_list()
-    cur = dict.fromkeys(V, 1)
-    
-    C = [V[0]]
-    v = V[0]
-    i = 0
-    run = True
-    
-    while run == True:
-        print 'v: ', v
-        while cur[v] <= Graph.degree(v) / 2:
-            Explore = explore(v, Graph, AdjList, cur)
-            Cadd = Explore['C']
-            cur = Explore['cur']
-            oldIndex = C.index(v)
-            C[oldIndex:oldIndex] = Cadd
-            C.pop(oldIndex + len(Cadd))
-            print 'C: ', C
-        i = i + 1
-        print 'i: ', i
-        v = C[2 * i - i]
-        print 'v: ', v
-        
-        print 'V in C:', (len(C) + 1) / 2
-        if (len(C) + 1) / 2 == i:
-            run = False
-            
-    return C
-
 def euler(Graph):
     K = []
     L = []
     V = Graph.nodes()
     used = dict.fromkeys(V, False)
-    
-    indexOld = 0
     
     Etmp = Graph.edges(data=True)
     E = []
@@ -91,8 +44,11 @@ def euler(Graph):
         C = []
         trace(u, IncList, new, C, e, used, L)
         index = e[u]
-        [K.insert(i + index + indexOld, item) for i, item in enumerate(C)]
-        indexOld = e[u] + indexOld
+
+        if len(C) > 0:
+            v = C[0][0]
+            index = K.index([(v1,v2,id) for v1,v2,id in K if v2 == v][0])
+            [K.insert(i + 1 + index , item) for i, item in enumerate(C)]
         
     return K
            
