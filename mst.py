@@ -14,7 +14,7 @@ def mst(Graph):
     S = set()
     ET = []
     
-    while S != V:#
+    while S != V:
         VS = V - S
         tmp = copy.deepcopy(d)
         map(tmp.__delitem__, S)
