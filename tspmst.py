@@ -8,10 +8,11 @@ from eulercycle import euler
 import networkx as nx
 import copy
 import collections
-from __builtin__ import False
+
 
 def tspmst(Graph):
     ET = mst(Graph)
+    print 'MST: ', ET
     ETd = copy.deepcopy(ET)
     for v1, v2, e in ETd: 
         e['id'] = e['id'] + '.5'
@@ -19,14 +20,13 @@ def tspmst(Graph):
     T = nx.MultiGraph()
     T.add_edges_from(dmst)
     C = euler(T)
-    
-    print 'MSTnx:', nx.minimum_spanning_tree(Graph).edges()
-    print 'MST: ', ET
-
+    T = []
+    ET = []
+    ETd = []
     H = []
     visited = collections.OrderedDict() 
         
-    for v1,v2, id in C:
+    for v1, v2, eid in C:
         visited[v1] = False
         
     skip = False
@@ -48,33 +48,29 @@ def tspmst(Graph):
                 visited[edge[0]] = True
                 visited[edge[1]] = True
             else:
-                shortcut = [k for k,v in visited.iteritems() if v == False]
+                shortcut = [k for k, v in visited.iteritems() if v == False][0]
                 v1 = edge[0]
-                minCost = float('Inf')
-                minCostV = shortcut[0]
-                for v2 in shortcut:
-                    cost = Graph.get_edge_data(v1,v2)['weight']
-                    if cost < minCost:
-                        minCost = cost
-                        minCostV = v2
-
-                H.append((edge[0],minCostV,'id 0'))
-                visited[minCostV] = True
+                H.append((edge[0], shortcut, 'id 0'))
+                visited[shortcut] = True
                 skip = True
-                skipUntil = minCostV
+                skipUntil = shortcut
         else: 
             break
     
     Tour = []
     cost = 0
-    for v1, v2, id in H:
-        Tour.append((v1,v2))
-        cost = cost + Graph.get_edge_data(v1,v2)['weight']
+    for v1, v2, eid  in H:
+        costEdge = Graph.get_edge_data(v1, v2)['weight']
+        cost = cost + costEdge
+        Tour.append(v1)
+        
     
-    last = Tour[-1][1]
-    first = Tour[0][0]
-    Tour.append((last,first))
-    cost = cost + Graph.get_edge_data(last,first)['weight']
+    last = Tour[-1]
+    first = Tour[0]
+    costLastEdge=Graph.get_edge_data(last, first)['weight']
+    Tour.append(first)
+    cost = cost+costLastEdge
     print 'Tour: ', Tour
     print 'Cost: ', cost
+
     

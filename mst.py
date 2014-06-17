@@ -19,6 +19,7 @@ def mst(Graph):
         tmp = copy.deepcopy(d)
         map(tmp.__delitem__, S)
         u = min(tmp,key=tmp.get)
+        tmp=[]
         S = S | set([u])
         nodes = set(Graph.neighbors(u)) & VS
         for v in nodes:

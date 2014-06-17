@@ -3,11 +3,8 @@ Created on Jun 14, 2014
 
 @author: marc
 '''
-from collections import Counter
 
 import math
-import networkx as nx
-import copy
 
 def euler(Graph):
     K = []
@@ -22,6 +19,7 @@ def euler(Graph):
         second = str(max(int(v1),int(v2)))
         E.append((first, second, 'id ' + e['id']))
     new = dict.fromkeys(E, True)
+    Etmp=[]
     
     IncList = dict.fromkeys(V, [])
     for v in V:
@@ -36,6 +34,7 @@ def euler(Graph):
     s = V[0]
     used[s] = True
     L.append(s)
+    V=[]
     
     trace(s, IncList, new, K, e, used, L)
     
@@ -47,7 +46,7 @@ def euler(Graph):
 
         if len(C) > 0:
             v = C[0][0]
-            index = K.index([(v1,v2,id) for v1,v2,id in K if v2 == v][0])
+            index = K.index([(v1,v2,eid) for v1,v2,eid in K if v2 == v][0])
             [K.insert(i + 1 + index , item) for i, item in enumerate(C)]
         
     return K
