@@ -8,18 +8,22 @@ from eulercycle import euler
 import networkx as nx
 import copy
 import collections
+import time
 
 
 def tspmst(Graph):
+    start_time = time.time()
     ET = mst(Graph)
-    print 'MST: ', ET
+    print 'Finished MST calculation in ', time.time() - start_time
     ETd = copy.deepcopy(ET)
     for v1, v2, e in ETd: 
         e['id'] = e['id'] + '.5'
     dmst = ET + ETd
     T = nx.MultiGraph()
     T.add_edges_from(dmst)
+    start_time = time.time()
     C = euler(T)
+    print 'Finished eulercycle calculation in ', time.time() - start_time
     T = []
     ET = []
     ETd = []
@@ -31,9 +35,7 @@ def tspmst(Graph):
         
     skip = False
     skipUntil = 'N'
-    
-    print 'Euler: ', C
-    
+    start_time = time.time()
     for edge in C:
         if skip == True and edge[0] != skipUntil:
             continue
@@ -67,9 +69,10 @@ def tspmst(Graph):
     
     last = Tour[-1]
     first = Tour[0]
-    costLastEdge=Graph.get_edge_data(last, first)['weight']
+    costLastEdge = Graph.get_edge_data(last, first)['weight']
     Tour.append(first)
-    cost = cost+costLastEdge
+    cost = cost + costLastEdge
+    print 'Finished TSP calculation in ', time.time() - start_time
     print 'Tour: ', Tour
     print 'Cost: ', cost
 
