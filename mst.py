@@ -16,10 +16,11 @@ def mst(Graph):
     
     while S != V:
         VS = V - S
-        tmp = copy.deepcopy(d)
-        map(tmp.__delitem__, S)
-        u = min(tmp,key=tmp.get)
-        tmp=[]
+        minval=min(map(d.get,VS))
+        u = 0
+        for k,v in d.iteritems():
+            if v == minval:
+                u = k
         S = S | set([u])
         nodes = set(Graph.neighbors(u)) & VS
         for v in nodes:

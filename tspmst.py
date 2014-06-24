@@ -9,6 +9,8 @@ import networkx as nx
 import copy
 import collections
 import time
+import cProfile
+import re
 
 
 def tspmst(Graph):
@@ -19,6 +21,7 @@ def tspmst(Graph):
     for v1, v2, e in ETd: 
         e['id'] = e['id'] + '.5'
     dmst = ET + ETd
+
     T = nx.MultiGraph()
     T.add_edges_from(dmst)
     start_time = time.time()
