@@ -20,4 +20,3 @@ graphFile = args.file
 
 Graph = nx.read_gexf(graphFile)
 cProfile.run('tspmst(Graph)')
-
