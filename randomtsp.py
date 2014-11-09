@@ -8,7 +8,7 @@ import networkx as nx
 def euclidian(G, i, j):
     return math.sqrt(
         (G.node[i]['x'] - G.node[j]['x'])**2 +
-        (G.node[i]['y'] - G.node[j]['y'])**2
+        (G.node[i]['x'] - G.node[j]['y'])**2
     )
 
 def main():
@@ -25,7 +25,7 @@ def main():
     # create a complete weighted graph using Euclidian distances
     for i in xrange(n):
         for j in xrange(i+1,n):
-            G.add_edge(i,j, weight=euclidian(G, i,j))
+            G.add_edge(i,j, weight=euclidian(G, i,j), color='black')
 
     # embed a tour with edge weight = ans (usually 0)
     if ans is not None:

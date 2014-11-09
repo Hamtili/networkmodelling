@@ -11,6 +11,7 @@ import collections
 import time
 import cProfile
 import re
+import matplotlib.pyplot as plt
 
 
 def tspmst(Graph):
@@ -66,17 +67,31 @@ def tspmst(Graph):
     cost = 0
     for v1, v2, eid  in H:
         costEdge = Graph.get_edge_data(v1, v2)['weight']
+        Graph[v1][v2]['color'] = 'red'
         cost = cost + costEdge
         Tour.append(v1)
-        
+    Tour.append(H[-1][1])   
     
     last = Tour[-1]
     first = Tour[0]
     costLastEdge = Graph.get_edge_data(last, first)['weight']
+    Graph[first][last]['color'] = 'red'
     Tour.append(first)
     cost = cost + costLastEdge
     print 'Finished TSP calculation in ', time.time() - start_time
     print 'Tour: ', Tour
     print 'Cost: ', cost
+    
+    x = nx.get_node_attributes(Graph, 'x')
+    y = nx.get_node_attributes(Graph, 'y')
+    tmp = [x, y]
+    pos = {}
+    for k in x.iterkeys():
+        pos[k] = tuple(d[k] for d in tmp)
+    
+    edges = Graph.edges()
+    colors = [Graph[u][v]['color'] for u,v in edges]
+    nx.draw(Graph, pos, edges=edges, edge_color=colors)
+    plt.show()
 
     
