@@ -8,7 +8,7 @@ import networkx as nx
 def euclidian(G, i, j):
     return math.sqrt(
         (G.node[i]['x'] - G.node[j]['x'])**2 +
-        (G.node[i]['x'] - G.node[j]['y'])**2
+        (G.node[i]['y'] - G.node[j]['y'])**2
     )
 
 def main():
